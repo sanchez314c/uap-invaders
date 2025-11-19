@@ -1,0 +1,257 @@
+{
+  "name": "uap-invaders",
+  "version": "1.0.0",
+  "description": "UAP Invaders - Contact Protocol: A modern space invaders game with mouse controls and UAP-themed enemies",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "dev": "electron . --dev --no-sandbox",
+    "test": "echo \"Tests will be added in future version\" && exit 0",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write \"src/**/*.{js,html,css}\"",
+    "format:check": "prettier --check \"src/**/*.{js,html,css}\"",
+    "dist": "electron-builder --mac --win --linux",
+    "dist:all": "electron-builder --mac --win --linux --publish=never",
+    "dist:current": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:mac:all": "electron-builder --mac --x64 --arm64",
+    "dist:mac:store": "electron-builder --mac --config.mac.target=mas",
+    "dist:win": "electron-builder --win",
+    "dist:win:all": "electron-builder --win --x64 --ia32 --arm64",
+    "dist:win:msi": "electron-builder --win --config.win.target=msi",
+    "dist:win:portable": "electron-builder --win --config.win.target=portable",
+    "dist:linux": "electron-builder --linux",
+    "dist:linux:all": "electron-builder --linux --x64 --arm64 --armv7l",
+    "dist:linux:appimage": "electron-builder --linux --config.linux.target=AppImage",
+    "dist:linux:deb": "electron-builder --linux --config.linux.target=deb",
+    "dist:linux:rpm": "electron-builder --linux --config.linux.target=rpm",
+    "dist:linux:snap": "electron-builder --linux --config.linux.target=snap",
+    "dist:linux:tar": "electron-builder --linux --config.linux.target=tar.xz",
+    "dist:maximum": "electron-builder --mac --win --linux --x64 --arm64 --ia32 --armv7l",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps",
+    "bloat-check": "./scripts/bloat-check.sh",
+    "temp-clean": "./scripts/temp-cleanup.sh",
+    "build-clean": "./scripts/compile-build-dist.sh --no-temp-clean --no-bloat-check",
+    "clean": "rm -rf dist/ build/ node_modules/.cache/"
+  },
+  "keywords": [
+    "game",
+    "space-invaders",
+    "uap",
+    "electron",
+    "cross-platform"
+  ],
+  "author": "J. Michaels",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanchez314c/uap-invaders.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sanchez314c/uap-invaders/issues"
+  },
+  "homepage": "https://github.com/sanchez314c/uap-invaders#readme",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.3.11",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5"
+  },
+  "build": {
+    "appId": "com.uapinvaders.contactprotocol",
+    "productName": "UAP Invaders Contact Protocol",
+    "copyright": "Copyright © 2025 Jason Paul Michaels",
+    "directories": {
+      "output": "dist",
+      "buildResources": "resources"
+    },
+    "files": [
+      "src/**/*",
+      "resources/**/*",
+      "package.json",
+      "!**/*.ts",
+      "!**/*.map",
+      "!**/*.md",
+      "!**/test/**",
+      "!**/tests/**",
+      "!**/__tests__/**",
+      "!**/spec/**",
+      "!**/docs/**",
+      "!**/README*",
+      "!**/CHANGELOG*",
+      "!**/LICENSE*",
+      "!**/.git/**",
+      "!**/.vscode/**",
+      "!**/node_modules/.cache/**",
+      "!**/build-temp/**"
+    ],
+    "compression": "maximum",
+    "mac": {
+      "category": "public.app-category.games",
+      "icon": "resources/icons/icon.icns",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "pkg",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "mas": {
+      "category": "public.app-category.games",
+      "icon": "resources/icons/icon.icns",
+      "hardenedRuntime": true,
+      "target": {
+        "target": "mas",
+        "arch": ["x64", "arm64"]
+      }
+    },
+    "dmg": {
+      "title": "UAP Invaders Contact Protocol",
+      "backgroundColor": "#000000",
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "icon": "resources/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "msi",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64", "ia32"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "resources/icons/icon.ico",
+      "uninstallerIcon": "resources/icons/icon.ico",
+      "installerHeaderIcon": "resources/icons/icon.ico",
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "UAP Invaders Contact Protocol"
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "upgradeCode": "27fff681-7758-4f5b-8b8b-0c161231cd57"
+    },
+    "portable": {
+      "requestExecutionLevel": "user"
+    },
+    "linux": {
+      "icon": "resources/icons",
+      "category": "Game",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        },
+        {
+          "target": "rpm",
+          "arch": ["x64"]
+        },
+        {
+          "target": "snap",
+          "arch": ["x64"]
+        },
+        {
+          "target": "tar.xz",
+          "arch": ["x64"]
+        },
+        {
+          "target": "tar.gz",
+          "arch": ["x64"]
+        }
+      ],
+      "desktop": {
+        "StartupNotify": "true",
+        "Encoding": "UTF-8",
+        "Icon": "uap-invaders",
+        "Type": "Application",
+        "Categories": "Game;"
+      }
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0",
+        "libuuid1",
+        "libsecret-1-0"
+      ]
+    },
+    "rpm": {
+      "depends": [
+        "gtk3",
+        "libnotify",
+        "nss",
+        "libXScrnSaver",
+        "libXtst",
+        "xdg-utils",
+        "at-spi2-core",
+        "libuuid",
+        "libsecret"
+      ]
+    },
+    "snap": {
+      "grade": "stable",
+      "summary": "UAP Invaders - Contact Protocol: A modern space invaders game",
+      "confinement": "strict",
+      "base": "core20"
+    },
+    "appImage": {
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "publish": null
+  }
+}
