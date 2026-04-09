@@ -1,0 +1,172 @@
+# System Requirements
+
+## Development Environment
+
+### Required Software
+- **Node.js**: Version 16.0.0 or higher
+  - Download from: https://nodejs.org/
+  - Recommended: Latest LTS version
+- **npm**: Version 8.0.0 or higher (comes with Node.js)
+- **Git**: For version control (recommended)
+  - Download from: https://git-scm.com/
+
+### Platform-Specific Requirements
+
+#### macOS
+- **macOS**: 10.14 (Mojave) or later
+- **Xcode Command Line Tools**: Required for native module compilation
+  ```bash
+  xcode-select --install
+  ```
+
+#### Windows
+- **Windows**: 10 or later (64-bit recommended)
+- **Visual Studio Build Tools**: Required for native module compilation
+  - Install "Desktop development with C++" workload
+  - Or install standalone: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+
+#### Linux
+- **Ubuntu**: 18.04 LTS or later
+- **Debian**: 10 or later
+- **Other distributions**: Equivalent versions with similar package availability
+
+**Required packages** (Ubuntu/Debian):
+```bash
+sudo apt update
+sudo apt install -y build-essential libnss3-dev libatk-bridge2.0-dev libdrm2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libxss1 libasound2-dev
+```
+
+**Required packages** (CentOS/RHEL/Fedora):
+```bash
+# CentOS/RHEL
+sudo yum install -y gcc-c++ make nss atk at-spi2-atk libdrm libxcomposite libxdamage libxrandr libgbm libxss alsa-lib
+
+# Fedora
+sudo dnf install -y gcc-c++ make nss atk at-spi2-atk libdrm libxcomposite libxdamage libxrandr libgbm libxss alsa-lib
+```
+
+## Runtime Requirements
+
+### For End Users (Installed Application)
+
+#### macOS
+- **macOS**: 10.14 (Mojave) or later
+- **Architecture**: Intel x64 or Apple Silicon (M1/M2)
+- **Memory**: 512 MB RAM minimum, 1 GB recommended
+- **Storage**: 200 MB available space
+
+#### Windows
+- **Windows**: 10 or later
+- **Architecture**: x64 or x86 (32-bit)
+- **Memory**: 512 MB RAM minimum, 1 GB recommended
+- **Storage**: 300 MB available space
+
+#### Linux
+- **Distribution**: Ubuntu 18.04+, Debian 10+, or equivalent
+- **Architecture**: x64
+- **Memory**: 512 MB RAM minimum, 1 GB recommended
+- **Storage**: 200 MB available space
+- **Display**: X11 or Wayland
+
+### For Web Version
+- **Modern web browser** with HTML5 Canvas support:
+  - Chrome 80+
+  - Firefox 75+
+  - Safari 13+
+  - Edge 80+
+- **JavaScript**: Must be enabled
+- **Memory**: 256 MB available to browser tab
+
+## Hardware Requirements
+
+### Minimum
+- **CPU**: 1 GHz processor
+- **RAM**: 512 MB
+- **Graphics**: Integrated graphics with Canvas/WebGL support
+- **Input**: Mouse or trackpad
+- **Display**: 800x600 resolution minimum
+
+### Recommended
+- **CPU**: 2 GHz dual-core processor or better
+- **RAM**: 2 GB or more
+- **Graphics**: Dedicated graphics card (for smoother performance)
+- **Input**: Gaming mouse for better control
+- **Display**: 1920x1080 resolution or higher
+
+## Network Requirements
+
+### Development
+- **Internet connection**: Required for dependency installation
+- **Bandwidth**: 10 Mbps recommended for initial setup
+
+### Runtime
+- **Internet connection**: Not required for gameplay
+- **Local storage**: Required for high scores (uses localStorage)
+
+## Verification Commands
+
+Run these commands to verify your system meets the requirements:
+
+```bash
+# Check Node.js version
+node --version
+
+# Check npm version
+npm --version
+
+# Check Git version (optional)
+git --version
+
+# Check available memory
+free -h  # Linux
+vm_stat  # macOS
+systeminfo | findstr "Total Physical Memory"  # Windows
+
+# Check disk space
+df -h    # Linux/macOS
+dir      # Windows
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"node: command not found"**
+   - Install Node.js from https://nodejs.org/
+   - Restart terminal after installation
+
+2. **"npm install fails with permission errors"**
+   - Use Node Version Manager (nvm) instead of system Node.js
+   - Or fix npm permissions: https://docs.npmjs.com/resolving-eacces-permissions-errors
+
+3. **"Electron build fails on Linux"**
+   - Install missing system dependencies listed above
+   - Update system packages: `sudo apt update && sudo apt upgrade`
+
+4. **"Application won't start on Windows"**
+   - Install Visual C++ Redistributable
+   - Run as Administrator if needed
+
+5. **"Performance issues"**
+   - Close other applications to free RAM
+   - Update graphics drivers
+   - Try windowed mode instead of fullscreen
+
+### Getting Help
+
+If you encounter issues not covered here:
+
+1. Check the main [README.md](README.md) for setup instructions
+2. Look at [open issues](https://github.com/your-username/uap-invaders/issues)
+3. Create a new issue with:
+   - Your operating system and version
+   - Node.js version (`node --version`)
+   - Complete error message
+   - Steps to reproduce the problem
+
+## Performance Notes
+
+- The web version typically uses less system resources
+- Electron version provides better performance and native features
+- Full-screen mode may improve performance on some systems
+- Consider reducing browser tab count while playing for optimal performance
