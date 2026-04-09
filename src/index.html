@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none';">
+    <title>UAP INVADERS: Contact Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ══════════════════════════════════════════════════════════════
+           NEO-NOIR GLASS MONITOR DESIGN TOKEN SYSTEM
+           ══════════════════════════════════════════════════════════════ */
+        :root {
+            /* -- Backgrounds -- */
+            --bg-void: #0a0b0e;
+            --bg-surface: #111214;
+            --bg-card: #141518;
+            --bg-card-hover: #1a1b1f;
+            --bg-sidebar: #0d0e10;
+            --bg-tertiary: #18191c;
+            --bg-input: #18191c;
+            --bg-modal: rgba(10, 11, 14, 0.94);
+
+            /* -- Typography -- */
+            --text-primary: #e8e8ec;
+            --text-secondary: #9a9aa6;
+            --text-muted: #5c5c6a;
+            --text-dim: #44444e;
+            --text-heading: #f4f4f7;
+            --text-accent: #14b8a6;
+            --text-inverse: #0a0b0e;
+
+            /* -- Accents -- */
+            --accent-teal: #14b8a6;
+            --accent-teal-dim: rgba(20, 184, 166, 0.12);
+            --accent-teal-glow: rgba(20, 184, 166, 0.25);
+            --accent-teal-hover: #0d9488;
+            --accent-blue: #06b6d4;
+            --accent-purple: #8b5cf6;
+
+            /* -- Status -- */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --color-offline: #52525b;
+
+            /* -- Borders -- */
+            --border-subtle: #1e1e24;
+            --border-light: #2a2a30;
+            --border-glow: rgba(20, 184, 166, 0.25);
+            --border-focus: #14b8a6;
+
+            /* -- Gradients -- */
+            --gradient-card: linear-gradient(145deg, #141518, #18191c);
+            --gradient-sidebar: linear-gradient(180deg, #0d0e10, #0a0b0e);
+            --gradient-bg: linear-gradient(160deg, #0a0b0e, #0f1012);
+            --gradient-button: linear-gradient(135deg, #14b8a6, #0d9488);
+            --gradient-header: linear-gradient(90deg, #14b8a6, #06b6d4);
+
+            /* -- Shadows (ALWAYS layered) -- */
+            --shadow-sm:
+                0 1px 2px rgba(0, 0, 0, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.15);
+            --shadow-md:
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.15);
+            --shadow-lg:
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                0 16px 32px rgba(0, 0, 0, 0.2);
+            --shadow-xl:
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                0 16px 32px rgba(0, 0, 0, 0.2),
+                0 32px 64px rgba(0, 0, 0, 0.25);
+            --shadow-card:
+                0 2px 4px rgba(0, 0, 0, 0.15),
+                0 4px 12px rgba(0, 0, 0, 0.2),
+                0 8px 24px rgba(0, 0, 0, 0.15);
+            --shadow-card-hover:
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 8px 24px rgba(0, 0, 0, 0.25),
+                0 16px 44px rgba(0, 0, 0, 0.2);
+            --shadow-glow: 0 0 16px rgba(20, 184, 166, 0.15);
+            --shadow-glow-strong: 0 0 24px rgba(20, 184, 166, 0.25);
+
+            /* -- Glass -- */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-bg-medium: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-highlight: rgba(255, 255, 255, 0.06);
+            --glass-highlight-strong: rgba(255, 255, 255, 0.10);
+
+            /* -- Radius -- */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-card: 14px;
+            --radius-button: 10px;
+            --radius-input: 10px;
+            --radius-xl: 20px;
+            --radius-full: 9999px;
+
+            /* -- Spacing -- */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+
+            /* -- Transitions -- */
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           GLOBAL STYLES
+           ══════════════════════════════════════════════════════════════ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Scrollbar: invisible at rest, visible on hover (Rule 13) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(42, 42, 50, 0) transparent;
+        }
+        *:hover {
+            scrollbar-color: #2a2a32 transparent;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: transparent; }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(42, 42, 50, 0);
+            border-radius: 3px;
+        }
+        *:hover::-webkit-scrollbar-thumb { background: #2a2a32; }
+        *::-webkit-scrollbar-thumb:hover { background: #3a3a44; }
+        *::-webkit-scrollbar-corner { background: transparent; }
+
+        ::selection { background: var(--accent-teal-dim); color: var(--text-heading); }
+
+        html, body {
+            background: transparent !important;
+            margin: 0;
+        }
+
+        body {
+            padding: 16px;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', Roboto, sans-serif;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           APP CONTAINER
+           ══════════════════════════════════════════════════════════════ */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: var(--gradient-bg);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            position: relative;
+            border: none;
+            box-shadow: none;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           DRAG HANDLE + TITLE BAR (Canonical Layout)
+           ══════════════════════════════════════════════════════════════ */
+        .drag-handle {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 48px;
+            -webkit-app-region: drag;
+            z-index: 50;
+        }
+
+        /* Only interactive LEAF elements opt out of drag */
+        button, input, select, a, canvas {
+            -webkit-app-region: no-drag;
+        }
+
+        .title-bar {
+            display: flex;
+            align-items: center;
+            height: 48px;
+            padding: 0 16px;
+            position: relative;
+            z-index: 100;
+            background: transparent;
+            flex-shrink: 0;
+        }
+
+        .title-bar .app-icon {
+            height: 18px;
+            width: auto;
+            object-fit: contain;
+            margin-right: 10px;
+            -webkit-app-region: no-drag;
+        }
+
+        .title-bar .app-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent-teal);
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .title-bar .app-tagline {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .title-bar .spacer { flex: 1; }
+
+        .title-bar-controls {
+            display: flex;
+            align-items: center;
+            -webkit-app-region: no-drag;
+            z-index: 200;
+        }
+
+        /* FLAT action icons group (About & Fullscreen) */
+        .title-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-right: 10px;
+        }
+
+        .title-bar-action {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            transition: color var(--transition-fast);
+            -webkit-app-region: no-drag;
+        }
+
+        .title-bar-action:hover {
+            color: var(--text-primary);
+        }
+
+        .title-bar-action#about-btn:hover {
+            color: var(--accent-teal);
+        }
+
+        /* CIRCULAR window controls group */
+        .title-bar-window-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .window-ctrl-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 13px;
+            transition: all 150ms ease;
+        }
+
+        .window-ctrl-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+        }
+
+        .window-ctrl-btn.window-close-btn:hover {
+            background: var(--error);
+            color: #ffffff;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           GAME CONTENT AREA
+           ══════════════════════════════════════════════════════════════ */
+        .game-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-top: 8px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           TITLE HEADER - Hero card with ambient gradient mesh
+           ══════════════════════════════════════════════════════════════ */
+        .title-section {
+            width: 100%;
+            max-width: 840px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 80% 80%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 60%),
+                var(--gradient-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 14px 20px;
+            margin: 0 var(--space-md) var(--space-sm) var(--space-md);
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition-normal);
+        }
+
+        .title-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Dot particle grid overlay */
+        .title-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .title-section:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .star-border {
+            color: var(--accent-teal);
+            font-size: 14px;
+            letter-spacing: 4px;
+            opacity: 0.4;
+            line-height: 1.2;
+        }
+
+        .title {
+            background: var(--gradient-header);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            padding: 6px 0;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           GAME CANVAS
+           ══════════════════════════════════════════════════════════════ */
+        #gameCanvas {
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            background: var(--bg-void);
+            display: block;
+            cursor: crosshair;
+            box-shadow: var(--shadow-md);
+            margin: 0 var(--space-md);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           UI STATUS PANEL - Glass card
+           ══════════════════════════════════════════════════════════════ */
+        .ui {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 840px;
+            padding: 12px 20px;
+            background: var(--gradient-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            margin: var(--space-sm) var(--space-md) 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition-normal);
+            overflow: hidden;
+        }
+
+        .ui::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ui > div {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .ui > div span {
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .ui .contact-label {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .progress-track {
+            height: 4px;
+            margin: 4px 0;
+            border-radius: 2px;
+            overflow: hidden;
+            background: var(--border-subtle);
+        }
+
+        .health-bar {
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px var(--accent-teal-glow);
+        }
+
+        .energy-bar {
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.15);
+        }
+
+        .score-bar {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.15);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           CONTROLS HINT
+           ══════════════════════════════════════════════════════════════ */
+        .controls {
+            text-align: center;
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           MENU SCREEN - Full overlay with ambient mesh
+           ══════════════════════════════════════════════════════════════ */
+        .menu-screen {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            background:
+                radial-gradient(ellipse at 75% 75%, rgba(20, 184, 166, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 25% 25%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 30%, rgba(6, 182, 212, 0.04) 0%, transparent 60%),
+                var(--gradient-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: var(--text-primary);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .menu-screen::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight-strong), transparent);
+            pointer-events: none;
+        }
+
+        .menu-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: var(--gradient-header);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(20, 184, 166, 0.3));
+            animation: ambientPulse 3s ease-in-out infinite;
+        }
+
+        .menu-subtitle {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .menu-subtitle > div:first-child {
+            color: var(--text-heading);
+            font-size: 1.125rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .menu-subtitle > div:last-child {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           INPUT FIELDS
+           ══════════════════════════════════════════════════════════════ */
+        .callsign-input {
+            background: var(--bg-input);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-input);
+            color: var(--text-primary);
+            font-family: 'Courier Prime', monospace;
+            font-size: 16px;
+            padding: 12px 16px;
+            margin: var(--space-sm);
+            text-align: center;
+            width: 300px;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+            letter-spacing: 2px;
+        }
+
+        .callsign-input::placeholder {
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        .callsign-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           BUTTON SYSTEM
+           ══════════════════════════════════════════════════════════════ */
+        .menu-button {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-button);
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 28px;
+            margin: var(--space-xs);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            letter-spacing: 1px;
+        }
+
+        .menu-button:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .menu-button.btn-primary {
+            background: var(--gradient-button);
+            color: var(--text-inverse);
+            border: none;
+            font-weight: 600;
+        }
+
+        .menu-button.btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow-strong);
+        }
+
+        .menu-button.btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           HIGH SCORES - Glass sub-panel
+           ══════════════════════════════════════════════════════════════ */
+        .high-scores {
+            margin-top: var(--space-lg);
+            text-align: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .high-scores::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+            pointer-events: none;
+        }
+
+        .high-scores h3 {
+            margin-bottom: var(--space-md);
+            color: var(--accent-teal);
+            font-size: 1.125rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .score-entry {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin: 6px auto;
+            padding: 10px 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            transition: all var(--transition-fast);
+        }
+
+        .score-entry:hover {
+            background: var(--glass-bg-medium);
+            border-color: var(--border-light);
+            transform: translateY(-1px);
+        }
+
+        .score-entry span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .score-entry span:last-child {
+            color: var(--accent-teal);
+            font-weight: 600;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           GAME OVER - Modal glass card
+           ══════════════════════════════════════════════════════════════ */
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background:
+                radial-gradient(ellipse at 80% 80%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                var(--gradient-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 32px 40px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            color: var(--text-primary);
+            min-width: 400px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+
+        .game-over::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight-strong), transparent);
+            pointer-events: none;
+        }
+
+        .game-over h2 {
+            color: var(--text-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            background: var(--gradient-header);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-over p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .game-over p span {
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .game-over #newRecord {
+            color: var(--accent-teal);
+            font-weight: 600;
+            font-size: 1.125rem;
+            text-shadow: 0 0 12px var(--accent-teal-glow);
+        }
+
+        .game-over .button-group {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin-top: var(--space-lg);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           NOTIFICATION TOAST
+           ══════════════════════════════════════════════════════════════ */
+        .notification-toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9));
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+
+        .notification-toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           MODAL BACKDROP
+           ══════════════════════════════════════════════════════════════ */
+        .modal-backdrop {
+            position: fixed;
+            top: 16px; left: 16px; right: 16px; bottom: 16px;
+            background: var(--bg-modal);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            border-radius: var(--radius-xl);
+            display: none;
+        }
+
+        .modal-backdrop.active {
+            display: block;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           ABOUT OVERLAY (In-page modal)
+           ══════════════════════════════════════════════════════════════ */
+        .about-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 11, 14, 0.94);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 200ms ease;
+        }
+
+        .about-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .about-modal {
+            background: var(--gradient-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 32px 40px;
+            min-width: 360px;
+            max-width: 440px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .about-modal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight-strong), transparent);
+            pointer-events: none;
+        }
+
+        .about-close-btn {
+            position: absolute;
+            top: 12px; right: 12px;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--glass-bg-medium);
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all var(--transition-fast);
+            z-index: 1;
+        }
+
+        .about-close-btn:hover { background: var(--error); color: #fff; }
+
+        .about-app-icon {
+            width: 64px; height: 64px;
+            border-radius: 12px;
+            margin: 0 auto 16px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .about-app-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin: 0 0 4px;
+        }
+
+        .about-version {
+            font-size: 14px;
+            color: var(--accent-teal);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Courier Prime', monospace;
+            margin-bottom: 12px;
+        }
+
+        .about-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .about-license {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .about-github-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gradient-button);
+            color: var(--text-inverse);
+            padding: 10px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-glow);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .about-github-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow-strong);
+        }
+
+        .about-github-badge svg { width: 16px; height: 16px; }
+
+        .about-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           STATUS BAR (Footer)
+           ══════════════════════════════════════════════════════════════ */
+        .status-bar-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 28px;
+            padding: 0 16px;
+            background: var(--bg-void);
+            border-top: 1px solid var(--border-subtle);
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .status-left { display: flex; align-items: center; gap: 8px; }
+        .status-right { display: flex; align-items: center; gap: 16px; }
+        .app-version { color: var(--accent-teal); font-weight: 500; }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+            flex-shrink: 0;
+        }
+
+        .status-indicator.offline {
+            background: var(--color-offline);
+            box-shadow: none;
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           LOADING OVERLAY
+           ══════════════════════════════════════════════════════════════ */
+        .loading-overlay {
+            position: fixed;
+            top: 16px; left: 16px; right: 16px; bottom: 16px;
+            background: rgba(10, 11, 14, 0.85);
+            backdrop-filter: blur(20px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 500;
+            border-radius: var(--radius-xl);
+        }
+
+        .loading-overlay.active { display: flex; }
+
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent-teal);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ══════════════════════════════════════════════════════════════
+           FULLSCREEN MODE OVERRIDES
+           ══════════════════════════════════════════════════════════════ */
+        body:not(.windowed) .title-bar {
+            display: none;
+        }
+
+        body:not(.windowed) .drag-handle {
+            display: none;
+        }
+
+        body:not(.windowed) .status-bar-footer {
+            display: none;
+        }
+
+        body:not(.windowed) #gameCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            border-radius: 0;
+            border: none;
+        }
+
+        body:not(.windowed) .ui {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            width: auto;
+            max-width: none;
+            margin: 0;
+            background: rgba(20, 21, 24, 0.85);
+            backdrop-filter: blur(10px);
+        }
+
+        body:not(.windowed) .controls {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 11, 14, 0.7);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(10px);
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+           AMBIENT PULSE ANIMATION
+           ══════════════════════════════════════════════════════════════ */
+        @keyframes ambientPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(20, 184, 166, 0.3)); }
+            50% { filter: drop-shadow(0 0 30px rgba(20, 184, 166, 0.5)); }
+        }
+    </style>
+</head>
+<body class="windowed">
+    <div class="app-container">
+        <!-- Drag Handle -->
+        <div class="drag-handle"></div>
+
+        <!-- Canonical Title Bar -->
+        <div class="title-bar">
+            <img src="icon-titlebar.png" class="app-icon" alt="" draggable="false">
+            <span class="app-name">UAP Invaders</span>
+            <span class="app-tagline">Contact Protocol</span>
+            <div class="spacer"></div>
+            <div class="title-bar-controls">
+                <div class="title-bar-actions">
+                    <button class="title-bar-action" id="about-btn" title="About">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    </button>
+                    <button class="title-bar-action" id="fullscreenBtn" title="Toggle Fullscreen">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                    </button>
+                </div>
+                <div class="title-bar-window-controls">
+                    <button class="window-ctrl-btn" onclick="window.electronAPI.windowMinimize()" title="Minimize">&#x2500;</button>
+                    <button class="window-ctrl-btn" onclick="window.electronAPI.windowMaximize()" title="Maximize">&#x25A1;</button>
+                    <button class="window-ctrl-btn window-close-btn" onclick="window.electronAPI.windowClose()" title="Close">&#x2715;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div class="notification-toast" id="notificationToast">Please enter a callsign, pilot!</div>
+
+        <!-- Menu Screen -->
+        <div class="menu-screen" id="menuScreen">
+            <div class="menu-title">UAP INVADERS</div>
+            <div class="menu-subtitle">
+                <div>CONTACT PROTOCOL ACTIVATED</div>
+                <div>Enter your callsign, pilot</div>
+            </div>
+
+            <input type="text" class="callsign-input" id="callsignInput" placeholder="ENTER CALLSIGN" maxlength="10">
+            <button class="menu-button btn-primary" id="startBtn">START MISSION</button>
+            <button class="menu-button" id="showScoresBtn">HIGH SCORES</button>
+
+            <div class="high-scores" id="highScores" style="display: none;">
+                <h3>TOP PILOTS</h3>
+                <div id="scoresList"></div>
+                <button class="menu-button" id="backBtn">BACK</button>
+            </div>
+        </div>
+
+        <!-- Game Content Area -->
+        <div class="game-content" id="gameContent">
+            <!-- Title Section -->
+            <div class="title-section">
+                <div class="star-border">* * * * * * * * * * * * * * * * * * * * * * * * *</div>
+                <div class="title">CONTACT PROTOCOL</div>
+                <div class="star-border">* * * * * * * * * * * * * * * * * * * * * * * * *</div>
+            </div>
+
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+            <div class="ui">
+                <div>
+                    <div>CALLSIGN: <span id="currentCallsign">UNKNOWN</span></div>
+                    <div>SCORE: <span id="score">0</span></div>
+                    <div class="progress-track"><div class="score-bar" style="width: 100%;" id="scoreBar"></div></div>
+                </div>
+                <div>
+                    <div>HEALTH: <span id="health">100</span>%</div>
+                    <div class="progress-track"><div class="health-bar" style="width: 100%;" id="healthBar"></div></div>
+                </div>
+                <div>
+                    <div>ENERGY: <span id="energy">100</span>%</div>
+                    <div class="progress-track"><div class="energy-bar" style="width: 100%;" id="energyBar"></div></div>
+                </div>
+                <div class="contact-label">
+                    <div>CONTACT PROTOCOL</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                Move MOUSE to navigate &bull; LEFT CLICK to fire &bull; F11 for fullscreen &bull; Intercept the UAPs!
+            </div>
+        </div>
+
+        <!-- Status Bar Footer -->
+        <div class="status-bar-footer">
+            <div class="status-left">
+                <div class="status-indicator" id="statusBarIndicator"></div>
+                <span id="statusBarText">Status: Ready</span>
+                <span style="color: var(--text-dim);">|</span>
+                <span id="statusBarItems">0 UAPs intercepted</span>
+            </div>
+            <div class="status-right">
+                <span class="app-version">v1.0.0</span>
+            </div>
+        </div>
+
+        <!-- Modal Backdrop for Game Over -->
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+
+        <!-- Game Over Overlay -->
+        <div class="game-over" id="gameOver">
+            <h2>MISSION COMPLETE</h2>
+            <p>Pilot: <span id="finalCallsign">UNKNOWN</span></p>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p id="newRecord" style="display: none;">NEW RECORD!</p>
+            <div class="button-group">
+                <button class="menu-button btn-primary" id="restartBtn">NEW MISSION</button>
+                <button class="menu-button" id="menuBtn">MAIN MENU</button>
+            </div>
+        </div>
+
+        <!-- About Modal Overlay (in-page) -->
+        <div class="about-overlay" id="aboutOverlay">
+            <div class="about-modal">
+                <button class="about-close-btn" onclick="closeAboutModal()">&#x2715;</button>
+                <img src="icon-titlebar.png" class="about-app-icon" alt="">
+                <h2 class="about-app-name">UAP Invaders</h2>
+                <div class="about-version">v1.0.0</div>
+                <div class="about-desc">A modern space invaders game with mouse controls and UAP-themed enemies</div>
+                <div class="about-license">MIT License | Jason Paul Michaels</div>
+                <a class="about-github-badge" href="#" id="aboutGithubLink">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    GitHub
+                </a>
+                <div class="about-email">software@jasonpaulmichaels.co</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════════════════
+        // ABOUT MODAL
+        // ══════════════════════════════════════════════════════════════
+        function openAboutModal() {
+            const overlay = document.getElementById('aboutOverlay');
+            if (overlay) overlay.classList.add('active');
+        }
+
+        function closeAboutModal() {
+            const overlay = document.getElementById('aboutOverlay');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAboutModal();
+            }
+        });
+
+        // Close on overlay click
+        document.getElementById('aboutOverlay')?.addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeAboutModal();
+        });
+
+        // Expose globally for onclick handlers
+        window.openAboutModal = openAboutModal;
+        window.closeAboutModal = closeAboutModal;
+
+        // GitHub link - open in external browser
+        document.getElementById('aboutGithubLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = 'https://github.com/sanchez314c/uap-invaders';
+            if (window.electronAPI?.openExternal) {
+                window.electronAPI.openExternal(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        });
+
+        // About button in title bar
+        document.getElementById('about-btn')?.addEventListener('click', () => {
+            openAboutModal();
+        });
+
+        // ══════════════════════════════════════════════════════════════
+        // NOTIFICATION TOAST
+        // ══════════════════════════════════════════════════════════════
+        function showNotification(message) {
+            const toast = document.getElementById('notificationToast');
+            toast.textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        // ══════════════════════════════════════════════════════════════
+        // GAME ENGINE
+        // ══════════════════════════════════════════════════════════════
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Canvas validation
+        if (!ctx) {
+            alert('Your browser does not support HTML5 Canvas. Please use a modern browser.');
+            throw new Error('Canvas not supported');
+        }
+
+        // Game state
+        let gameRunning = false;
+        let gameStarted = false;
+        let score = 0;
+        let health = 100;
+        let energy = 100;
+        let currentCallsign = '';
+        let isFullscreen = false;
+        let mouseX = 0;
+        let mouseY = 0;
+        let totalIntercepted = 0;
+
+        // Player
+        const player = {
+            x: canvas.width / 2,
+            y: canvas.height - 50,
+            width: 30,
+            height: 30
+        };
+
+        // Arrays for game objects
+        let bullets = [];
+        let enemies = [];
+        let stars = [];
+        let explosions = [];
+
+        // Cached DOM elements (performance optimization)
+        const uiElements = {};
+
+        // Collision detection sets (pre-allocated)
+        const hitBullets = new Set();
+        const hitEnemies = new Set();
+
+        // UAP types with different behaviors
+        const uapTypes = [
+            { emoji: '\u{1F6F8}', name: 'Classic Saucer', points: 10, speed: 1, size: 30 },
+            { emoji: '\u{1F6F0}\uFE0F', name: 'Probe', points: 15, speed: 2, size: 25 },
+            { emoji: '\u26A1', name: 'Tic Tac', points: 25, speed: 3, size: 20 },
+            { emoji: '\u{1F525}', name: 'Phoenix Light', points: 30, speed: 1.5, size: 35 },
+            { emoji: '\u{1F4AB}', name: 'Orb', points: 20, speed: 2.5, size: 22 },
+            { emoji: '\u{1F300}', name: 'Vortex', points: 40, speed: 1, size: 40 }
+        ];
+
+        // High scores system
+        let highScores = (() => {
+            try {
+                const stored = JSON.parse(localStorage.getItem('uapInvadersScores'));
+                if (!Array.isArray(stored)) return [];
+                return stored.filter(e =>
+                    e && typeof e === 'object' &&
+                    typeof e.callsign === 'string' &&
+                    typeof e.score === 'number' && e.score >= 0
+                );
+            } catch (e) { return []; }
+        })();
+
+        // Generate background stars
+        function generateStars() {
+            stars = [];
+            const starCount = isFullscreen ? 300 : 150;
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speed: Math.random() * 0.8 + 0.2,
+                    brightness: Math.random() * 0.8 + 0.2
+                });
+            }
+        }
+
+        // Status bar update
+        function updateStatusBar() {
+            const indicator = document.getElementById('statusBarIndicator');
+            const text = document.getElementById('statusBarText');
+            const items = document.getElementById('statusBarItems');
+
+            if (gameRunning) {
+                if (indicator) indicator.className = 'status-indicator';
+                if (text) text.textContent = 'Status: Active';
+            } else if (gameStarted) {
+                if (indicator) indicator.className = 'status-indicator offline';
+                if (text) text.textContent = 'Status: Mission Over';
+            } else {
+                if (indicator) indicator.className = 'status-indicator';
+                if (text) text.textContent = 'Status: Ready';
+            }
+            if (items) items.textContent = totalIntercepted + ' UAP' + (totalIntercepted !== 1 ? 's' : '') + ' intercepted';
+        }
+
+        // Initialize game
+        function initGame() {
+            resizeCanvas();
+            generateStars();
+
+            // Cache DOM elements for performance
+            uiElements.score = document.getElementById('score');
+            uiElements.health = document.getElementById('health');
+            uiElements.energy = document.getElementById('energy');
+            uiElements.healthBar = document.getElementById('healthBar');
+            uiElements.energyBar = document.getElementById('energyBar');
+            uiElements.scoreBar = document.getElementById('scoreBar');
+            uiElements.currentCallsign = document.getElementById('currentCallsign');
+
+            // Menu event listeners
+            document.getElementById('startBtn').addEventListener('click', startGame);
+            document.getElementById('showScoresBtn').addEventListener('click', showHighScores);
+            document.getElementById('backBtn').addEventListener('click', showMenu);
+            document.getElementById('restartBtn').addEventListener('click', restartGame);
+            document.getElementById('menuBtn').addEventListener('click', showMenu);
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+
+            // Callsign input
+            document.getElementById('callsignInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    startGame();
+                }
+            });
+
+            displayHighScores();
+            updateStatusBar();
+        }
+
+        // Resize canvas for fullscreen
+        function resizeCanvas() {
+            if (isFullscreen) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            } else {
+                canvas.width = 800;
+                canvas.height = 600;
+            }
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 50;
+        }
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            if (!isFullscreen) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen()
+                        .then(() => {
+                            isFullscreen = true;
+                        })
+                        .catch(err => {
+                            console.error('Fullscreen request failed:', err);
+                        });
+                }
+                document.body.classList.remove('windowed');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+                document.body.classList.add('windowed');
+                isFullscreen = false;
+            }
+            resizeCanvas();
+            generateStars();
+        }
+
+        // Show menu
+        function showMenu() {
+            gameRunning = false;
+            gameStarted = false;
+            document.getElementById('menuScreen').style.display = 'flex';
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('modalBackdrop').classList.remove('active');
+            document.getElementById('highScores').style.display = 'none';
+            updateStatusBar();
+        }
+
+        // Start game
+        function startGame() {
+            const callsignInput = document.getElementById('callsignInput');
+            currentCallsign = callsignInput.value.trim().toUpperCase().replace(/[^A-Z0-9\-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'UNKNOWN';
+
+            if (currentCallsign === 'UNKNOWN') {
+                showNotification('Please enter a callsign, pilot!');
+                return;
+            }
+
+            document.getElementById('currentCallsign').textContent = currentCallsign;
+            document.getElementById('menuScreen').style.display = 'none';
+
+            // Reset game state
+            score = 0;
+            health = 100;
+            energy = 100;
+            bullets = [];
+            enemies = [];
+            explosions = [];
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 50;
+
+            gameRunning = true;
+            gameStarted = true;
+            updateUI();
+            updateStatusBar();
+        }
+
+        // Show high scores
+        function showHighScores() {
+            document.getElementById('highScores').style.display = 'block';
+        }
+
+        // Display high scores
+        function displayHighScores() {
+            const scoresList = document.getElementById('scoresList');
+            scoresList.innerHTML = '';
+
+            highScores.slice(0, 10).forEach((entry, index) => {
+                const scoreEntry = document.createElement('div');
+                scoreEntry.className = 'score-entry';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `${index + 1}. ${entry.callsign}`;
+
+                const scoreSpan = document.createElement('span');
+                scoreSpan.textContent = entry.score;
+
+                scoreEntry.appendChild(nameSpan);
+                scoreEntry.appendChild(scoreSpan);
+                scoresList.appendChild(scoreEntry);
+            });
+        }
+
+        // Save high score
+        function saveHighScore() {
+            const newScore = { callsign: currentCallsign, score: score };
+            highScores.push(newScore);
+            highScores.sort((a, b) => b.score - a.score);
+            highScores = highScores.slice(0, 10);
+            localStorage.setItem('uapInvadersScores', JSON.stringify(highScores));
+            displayHighScores();
+
+            // Check if it's a new record
+            if (highScores[0].score === score && highScores[0].callsign === currentCallsign) {
+                document.getElementById('newRecord').style.display = 'block';
+            }
+        }
+
+        // Mouse controls
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('click', (e) => {
+            if (gameRunning) {
+                shoot();
+            }
+        });
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'F11') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+
+        function shoot() {
+            if (energy >= 10) {
+                bullets.push({
+                    x: player.x + player.width / 2,
+                    y: player.y,
+                    speed: 8
+                });
+                energy = Math.max(0, energy - 10);
+                updateUI();
+            }
+        }
+
+        function spawnEnemy() {
+            const uapType = uapTypes[Math.floor(Math.random() * uapTypes.length)];
+            enemies.push({
+                x: Math.random() * (canvas.width - uapType.size),
+                y: -uapType.size,
+                width: uapType.size,
+                height: uapType.size,
+                speed: uapType.speed + Math.random() * 0.5,
+                type: uapType,
+                angle: 0,
+                wobble: Math.random() * 2
+            });
+        }
+
+        function updatePlayer() {
+            const targetX = mouseX - player.width / 2;
+            const targetY = mouseY - player.height / 2;
+
+            const constrainedX = Math.max(0, Math.min(canvas.width - player.width, targetX));
+            const constrainedY = Math.max(0, Math.min(canvas.height - player.height, targetY));
+
+            player.x += (constrainedX - player.x) * 0.15;
+            player.y += (constrainedY - player.y) * 0.15;
+        }
+
+        function updateBullets() {
+            if (bullets.length === 0) return;
+            bullets = bullets.filter(bullet => {
+                bullet.y -= bullet.speed;
+                return bullet.y > -10 && bullet.y < canvas.height + 100;
+            });
+        }
+
+        function updateEnemies() {
+            enemies = enemies.filter(enemy => {
+                enemy.y += enemy.speed;
+                enemy.angle += enemy.wobble * 0.05;
+                enemy.x += Math.sin(enemy.angle) * 0.5;
+
+                if (enemy.y > canvas.height + enemy.height) {
+                    health -= 5;
+                    updateUI();
+                    return false;
+                }
+                return true;
+            });
+
+            const spawnRate = Math.min(0.03, 0.008 + score / 10000);
+            if (Math.random() < spawnRate) {
+                spawnEnemy();
+            }
+        }
+
+        function updateStars() {
+            stars.forEach(star => {
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = -5;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        function updateExplosions() {
+            explosions = explosions.filter(explosion => {
+                explosion.life--;
+                explosion.radius += 0.5;
+                return explosion.life > 0;
+            });
+        }
+
+        function createExplosion(x, y) {
+            explosions.push({
+                x: x,
+                y: y,
+                radius: 0,
+                life: 20,
+                color: `hsl(${Math.random() * 60 + 160}, 100%, 50%)`
+            });
+        }
+
+        function checkCollisions() {
+            hitBullets.clear();
+            hitEnemies.clear();
+
+            bullets.forEach((bullet, bIndex) => {
+                if (hitBullets.has(bIndex)) return;
+                enemies.forEach((enemy, eIndex) => {
+                    if (hitEnemies.has(eIndex) || hitBullets.has(bIndex)) return;
+                    const distance = Math.sqrt(
+                        Math.pow(bullet.x - (enemy.x + enemy.width/2), 2) +
+                        Math.pow(bullet.y - (enemy.y + enemy.height/2), 2)
+                    );
+
+                    if (distance < enemy.width * 0.6) {
+                        hitBullets.add(bIndex);
+                        hitEnemies.add(eIndex);
+                        score += enemy.type.points;
+                        totalIntercepted++;
+                        createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2);
+                    }
+                });
+            });
+
+            // Player-enemy collisions
+            enemies.forEach((enemy, eIndex) => {
+                if (hitEnemies.has(eIndex)) return;
+                const distance = Math.sqrt(
+                    Math.pow(player.x + player.width/2 - (enemy.x + enemy.width/2), 2) +
+                    Math.pow(player.y + player.height/2 - (enemy.y + enemy.height/2), 2)
+                );
+
+                if (distance < (player.width + enemy.width) / 3) {
+                    hitEnemies.add(eIndex);
+                    health -= 15;
+                    createExplosion(enemy.x + enemy.width/2, enemy.y + enemy.height/2);
+                }
+            });
+
+            if (hitBullets.size > 0) {
+                bullets = bullets.filter((_, i) => !hitBullets.has(i));
+            }
+            if (hitEnemies.size > 0) {
+                enemies = enemies.filter((_, i) => !hitEnemies.has(i));
+            }
+            if (hitBullets.size > 0 || hitEnemies.size > 0) {
+                updateUI();
+                updateStatusBar();
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('health').textContent = Math.max(0, health);
+            document.getElementById('energy').textContent = Math.max(0, energy);
+
+            document.getElementById('healthBar').style.width = Math.max(0, health) + '%';
+            document.getElementById('energyBar').style.width = Math.max(0, energy) + '%';
+            document.getElementById('scoreBar').style.width = Math.floor(Math.min(100, score / 10)) + '%';
+
+            // Regenerate energy
+            if (energy < 100 && gameRunning && health > 0) {
+                energy = Math.min(100, energy + 0.3);
+            }
+
+            // Check game over
+            if (health <= 0 && gameRunning) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            saveHighScore();
+            document.getElementById('finalCallsign').textContent = currentCallsign;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('modalBackdrop').classList.add('active');
+            document.getElementById('gameOver').style.display = 'block';
+            updateStatusBar();
+        }
+
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('modalBackdrop').classList.remove('active');
+            document.getElementById('newRecord').style.display = 'none';
+            startGame();
+        }
+
+        function draw() {
+            // Clear canvas with deep space gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#0a0b11');
+            gradient.addColorStop(1, '#0a0b0e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw stars
+            ctx.fillStyle = '#ffffff';
+            stars.forEach(star => {
+                ctx.globalAlpha = star.brightness;
+                ctx.fillRect(star.x, star.y, 1, 1);
+            });
+            ctx.globalAlpha = 1;
+
+            // Draw player
+            ctx.font = '24px Arial';
+            ctx.fillText('\u{1F680}', player.x, player.y + 20);
+
+            // Draw enemies (UAPs)
+            enemies.forEach(enemy => {
+                ctx.save();
+                ctx.translate(enemy.x + enemy.width/2, enemy.y + enemy.height/2);
+                ctx.rotate(enemy.angle * 0.1);
+                ctx.font = enemy.type.size + 'px Arial';
+                ctx.fillText(enemy.type.emoji, -enemy.width/2, enemy.height/4);
+                ctx.restore();
+            });
+
+            // Draw bullets
+            ctx.fillStyle = '#14b8a6';
+            bullets.forEach(bullet => {
+                ctx.fillRect(bullet.x - 1, bullet.y, 2, 8);
+                ctx.shadowColor = '#14b8a6';
+                ctx.shadowBlur = 5;
+                ctx.fillRect(bullet.x - 1, bullet.y, 2, 8);
+                ctx.shadowBlur = 0;
+            });
+
+            // Draw explosions
+            explosions.forEach(explosion => {
+                ctx.save();
+                ctx.globalAlpha = explosion.life / 20;
+                ctx.strokeStyle = explosion.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(explosion.x, explosion.y, explosion.radius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            });
+        }
+
+        function gameLoop() {
+            if (gameRunning) {
+                updatePlayer();
+                updateBullets();
+                updateEnemies();
+                updateExplosions();
+                checkCollisions();
+                updateUI();
+            }
+
+            updateStars();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Initialize and start
+        initGame();
+        showMenu();
+    </script>
+</body>
+</html>
